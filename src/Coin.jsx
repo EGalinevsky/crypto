@@ -1,18 +1,21 @@
 import React from 'react'
-import './coin.css'
+import './styles/coin.css'
 
-const Coin = ({ marketcap, image, name, symbol, price, volume, priceChange }) => {
+const Coins = ({ marketcap, image, name, symbol, price, volume, priceChange }) => {
+    console.log(marketcap.toFixed(2))
     return (
-        <div className="coin-conntainer">
+            <div className="coin-conntainer">
             <div className="coin-row">
                 <div className="coin">
-                    <img src={image} alt="crypto" />
-                    <h1>{name}</h1>
-                    <p className="coin-symbol">{symbol}</p>
+                    <div>                        
+                        <img src={image} alt="crypto" />
+                    </div>
+                    <div className="coin-item">
+                        <h1 className="coin-title">{symbol}</h1>
+                        <p className="coin-text">{name}</p>
+                    </div>
                 </div>
                 <div className="coin-data">
-                    <p className="coin-price">${price}</p>
-                    <p className="coin-volume">${volume.toLocaleString()}</p>
                     {priceChange < 0 ? (
                         <p className="coin-precent red">
                             {priceChange.toFixed(2)}%
@@ -22,13 +25,12 @@ const Coin = ({ marketcap, image, name, symbol, price, volume, priceChange }) =>
                             {priceChange.toFixed(2)}%
                         </p>
                     )}
-                    <p className="coin-marketcap">
-                        Mkt Cap: ${marketcap.toLocaleString()}
-                    </p>
+                    <p className="coin-price">${price}</p>
+
                 </div>
             </div>
-        </div>
+            </div>
     )
 }
 
-export default Coin
+export default Coins
