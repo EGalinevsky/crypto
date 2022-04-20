@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
-import Coin from './Coin';
+import Coins from './Coin';
 
 const URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'
 
 function App() {
   const [coins, setCoins] = useState([])
+  const [show, setShow] = useState(false)
   const [search, setSearch] = useState('')
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   useEffect(() => {
     axios.get(URL)
@@ -20,22 +22,36 @@ function App() {
   const handleChange = e => {
     setSearch(e.target.value)
   }
-
-  const filteredCoins = coins.filter(coin => coin.name.toLowerCase().includes(search.toLowerCase()))
+  const dataToday = new Date()
+  const filteredCoins = coins.filter(coin => coin.name.toLowerCase().includes(search.toLowerCase())).slice(0,20)
   console.log(filteredCoins)
+  let month = months[dataToday.getMonth()];
   return (
     <div className="coin-app">
-      <div className="coin-search">
-        <h1 className="coin-text">
+      <button className='btn' onClick={()=> setShow(prew => !prew)}>
+        Show search
+      </button>
+      {show && <div className="coin-search">
+        <h1 className="coin-text-sera">
           Search a currency
         </h1>
         <form>
           <input onChange={handleChange} type="text" placeholder="Search" className="coin-input" />
         </form>
+      </div>}
+
+      <div className='header'>
+        <h1 className='header-title'>
+          Курс криптовалюты
+        </h1>
+        <p className='header-text'>
+          {`${dataToday.getDate()} ${month}, ${dataToday.getFullYear()}`}
+        </p>
       </div>
+      <div className='wrapper'>
       {filteredCoins.map(coin => {
         return (
-          <Coin
+          <Coins
             key={coin.id}
             name={coin.name}
             image={coin.image}
@@ -46,6 +62,11 @@ function App() {
             volume={coin.total_volume} />
         )
       })}
+      </div>
+      <div className='border-first'/>
+      <div className='border-second'/>
+
+
     </div>
   );
 }
